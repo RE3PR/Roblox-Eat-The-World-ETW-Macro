@@ -1,3 +1,8 @@
+; Copyright (C) 2026 Your Name
+; Licensed under GPL-3.0-or-later
+; See LICENSE file for full license details
+
+
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
