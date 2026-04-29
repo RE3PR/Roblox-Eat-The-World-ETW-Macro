@@ -1,0 +1,14 @@
+link=
+exit=j
+pause=p
+language=English
+device=Windows
+browser=Google Chrome
+upgrade=Size
+ratio=5.5
+map_Studville=0
+map_MiddleRobloxia=0
+map_BlockTown=1
+map_MegaGrid=1
+map_MegaBaseplate=1
+map_TownOfRobloxia=1
