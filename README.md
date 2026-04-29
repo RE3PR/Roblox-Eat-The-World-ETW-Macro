@@ -1,7 +1,7 @@
 # 🍽️ ETW Macro (Eat The World – Roblox)
 
 This is a **copyleft project** designed for automation in *Eat The World* on Roblox.
-This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+This project is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
 You may use, modify, and distribute this software, but if you distribute it (even commercially), you MUST provide the source code under the same license.
 
 ---
