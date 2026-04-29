@@ -51,11 +51,10 @@ This macro ensures continuous grinding in-game with minimal input.
 
 ## ⚠️ Requirements
 
-- Windows OS  
-- AutoHotkey installed  
 - Tesseract OCR installed  
 - Roblox installed  
-
+- Atleast 200k size and multi 15 minimum
+  
 ---
 
 ## 📜 Open Source Terms of Use (TOS)
