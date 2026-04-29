@@ -1,6 +1,8 @@
 # 🍽️ ETW Macro (Eat The World – Roblox)
 
-This is an **open-source macro project** designed for automation in *Eat The World* on Roblox.
+This is a **copyleft project** designed for automation in *Eat The World* on Roblox.
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+You may use, modify, and distribute this software, but if you distribute it (even commercially), you MUST provide the source code under the same license.
 
 ---
 
@@ -57,34 +59,6 @@ This macro ensures continuous grinding in-game with minimal input.
   
 ---
 
-## 📜 Open Source Terms of Use (TOS)
-
-By using this project, you agree to the following:
-
-### ✅ Allowed
-- Personal use  
-- Editing and modifying the source code  
-- Sharing improvements or forks (with credit)  
-
-### ⚠️ Conditions
-- Credit must be given to the original creator  
-- Any modified versions must state changes made  
-
-### ❌ Not Allowed
-- Selling this software or modified versions  
-- Removing original credit or ownership  
-- Using it for malicious purposes  
-
----
-
-## ⚠️ Disclaimer
-
-- This project is provided **as-is without warranty**  
-- Use at your own risk  
-- Automation tools may violate Roblox Terms of Service  
-- The creator is not responsible for bans or damages  
-
----
 
 ## 🤝 Contributions
 
