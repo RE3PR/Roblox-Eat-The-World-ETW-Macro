@@ -34,7 +34,7 @@ This macro ensures continuous grinding in-game with minimal input.
 
 ### 1. Download Requirements
 - Install **Tesseract OCR**:  
-  Required for reading text: [Download here](https://github.com/UB-Mannheim/tesseract/wiki)
+  Required for reading text: [Download](https://github.com/UB-Mannheim/tesseract/wiki)
 
 ### 2. Install AutoHotkey
 - Required for `.ahk` scripts: [Download](https://www.autohotkey.com/)
