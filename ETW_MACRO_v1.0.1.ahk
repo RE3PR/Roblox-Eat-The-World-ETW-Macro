@@ -45,7 +45,7 @@ global map_TownOfRobloxia := 1
 global isRunning := false
 global selectedMaps := Map()
 global tesseractPath := "C:\Program Files\Tesseract-OCR\tesseract.exe"
-
+global lastPauseToggle := 0
 
 global lastOCR := ""
 global stableStart := 0
@@ -820,17 +820,48 @@ for mapName, pixels in maps {
                 break
             }
         }
+if (matchAll) {
 
-        if (matchAll) {
-		    SendEvent "{Esc}"
-            Sleep 700
-            SendEvent "r"
-            Sleep 700
-            SendEvent "{Enter}"
-			Sleep 6700
-            MainMacro()
-            return
+
+    SendEvent("{Esc}")
+    lastSend := A_TickCount
+
+    loop {
+        col := PixelGetColor(1107, 860, "RGB")
+
+        if (ColorMatch(col, 0x7482AF, 10))
+            break
+
+        if (A_TickCount - lastSend >= 3000) {
+            SendEvent("{Esc}")
+            lastSend := A_TickCount
         }
+
+        Sleep(50)
+    }
+
+    SendEvent("r")
+    lastSend := A_TickCount
+
+    loop {
+        col := PixelGetColor(555, 348, "RGB")
+
+        if (ColorMatch(col, 0xE1E3E9, 10))
+            break
+
+        if (A_TickCount - lastSend >= 3000) {
+            SendEvent("r")
+            lastSend := A_TickCount
+        }
+
+        Sleep(50)
+    }
+Sleep 500
+SendEvent("{Enter}")
+Sleep 6000
+MainMacro()
+return
+}
     }
 }
 
@@ -892,6 +923,8 @@ WaitForMaps(timeout := 10000) {
     return false 
 }
 
+
+
 MapSelection() {
     global selectedMaps
 
@@ -921,88 +954,84 @@ MapSelection() {
         Click 758, 502
         Sleep 200
         Click 760, 673
-        Sleep 6500
+        Sleep 500
     }
 
-    Loop {
-        WaitIfPaused()
-        found := false
+activeMaps := []
 
-        if (map_MegaBaseplate) {
-            c1 := PixelGetColor(1036, 223, "RGB")
-            if (CheckColor(1036, 223, 0x24924C, 12)) {
-                Click 1036, 223
+if (map_MegaBaseplate)
+    activeMaps.Push("MegaBaseplate")
+
+if (map_MegaGrid)
+    activeMaps.Push("MegaGrid")
+
+if (map_TownOfRobloxia)
+    activeMaps.Push("TownOfRobloxia")
+
+if (map_MiddleRobloxia)
+    activeMaps.Push("MiddleRobloxia")
+
+if (map_Studville)
+    activeMaps.Push("Studville")
+
+if (map_BlockTown)
+    activeMaps.Push("BlockTown")
+
+MapData := Map()
+
+MapData["MegaBaseplate"] := [
+    {x: 1036, y: 223, color: 0x24924C, tol: 12}
+]
+
+MapData["MegaGrid"] := [
+    {x: 644, y: 226, color: 0xCD82C6, tol: 12},
+    {x: 836, y: 227, color: 0xB86EB3, tol: 12},
+    {x: 1034, y: 221, color: 0x8B5390, tol: 12}
+]
+
+MapData["TownOfRobloxia"] := [
+    {x: 829, y: 226, color: 0x4CA953, tol: 12},
+    {x: 1028, y: 224, color: 0x48A853, tol: 12}
+]
+
+MapData["MiddleRobloxia"] := [
+    {x: 646, y: 228, color: 0x3CAE53, tol: 12}
+]
+
+MapData["Studville"] := [
+    {x: 837, y: 227, color: 0x3E564F, tol: 12},
+    {x: 1024, y: 223, color: 0x2D5244, tol: 12}
+]
+
+MapData["BlockTown"] := [
+    {x: 653, y: 222, color: 0x002C4B, tol: 12},
+    {x: 844, y: 224, color: 0x326C91, tol: 12},
+    {x: 1033, y: 222, color: 0xA59B93, tol: 12}
+]
+
+Loop {
+    WaitIfPaused()
+    found := false
+
+    for mapName in activeMaps {
+        checks := MapData[mapName]
+
+        for check in checks {
+            if (CheckColor(check.x, check.y, check.color, check.tol)) {
+
+                Click (check.HasProp("clickX") ? check.clickX : check.x)
+                    , (check.HasProp("clickY") ? check.clickY : check.y)
+
                 found := true
+                break 2
             }
         }
+    }
 
-        if (!found && map_MegaGrid) {
-            c1 := PixelGetColor(644, 226, "RGB")
-            c2 := PixelGetColor(836, 227, "RGB")
-            c3 := PixelGetColor(1032, 226, "RGB")
-
-            if (CheckColor(644, 226, 0xCD82C6, 12)) {
-                Click 644, 226
-                found := true
-            } else if (CheckColor(836, 227, 0xB86EB3, 12)) {
-                Click 836, 227
-                found := true
-            } else if (CheckColor(1032, 226, 0xC46DBB, 12)) {
-                Click 1032, 226
-                found := true
-            }
-        }
-
-        if (!found && map_TownOfRobloxia) {
-            c2 := PixelGetColor(829, 226, "RGB")
-            c3 := PixelGetColor(1028, 224, "RGB")
-
-            if (CheckColor(829, 226, 0x4CA953, 12)) {
-                Click 829, 226
-                found := true
-            } else if (CheckColor(1028, 224, 0x48A853, 12)) {
-                Click 1028, 224
-                found := true
-            }
-        }
-
-        if (!found && map_MiddleRobloxia) {
-            c1 := PixelGetColor(646, 228, "RGB")
-            if (CheckColor(646, 228, 0x3CAE53, 12)) {
-                Click 646, 228
-                found := true
-            }
-        }
-
-        if (!found && map_Studville) {
-            c2 := PixelGetColor(837, 227, "RGB")
-            c3 := PixelGetColor(1024, 223, "RGB")
-
-            if (CheckColor(837, 227, 0x3E564F, 12)) {
-                Click 837, 227
-                found := true
-            } else if (CheckColor(1024, 223, 0x2D5244, 12)) {
-                Click 1024, 223
-                found := true
-            }
-        }
-
-        if (!found && map_BlockTown) {
-            c1 := PixelGetColor(653, 222, "RGB")
-            c2 := PixelGetColor(844, 224, "RGB")
-            c3 := PixelGetColor(1033, 222, "RGB")
-
-            if (CheckColor(653, 222, 0x002C4B, 12)) {
-                Click 653, 222
-                found := true
-            } else if (CheckColor(844, 224, 0x326C91, 12)) {
-                Click 844, 224
-                found := true
-            } else if (CheckColor(1033, 222, 0xA59B93, 12)) {
-                Click 1033, 222
-                found := true
-            }
-        }
+    if (found) {
+        WaitMapLoad()
+        break
+    }
 
         if (found) {
             WaitMapLoad()
@@ -1082,13 +1111,43 @@ WaitMapLoad() {
         Sleep 500
     }
 
-    SendEvent "{Esc}"
-    Sleep 700
-    SendEvent "r"
-    Sleep 700
-    SendEvent "{Enter}"
+    SendEvent("{Esc}")
+    lastSend := A_TickCount
 
-    Sleep 6700
+    loop {
+        col := PixelGetColor(1107, 860, "RGB")
+
+        if (ColorMatch(col, 0x7482AF, 10))
+            break
+
+        if (A_TickCount - lastSend >= 3000) {
+            SendEvent("{Esc}")
+            lastSend := A_TickCount
+        }
+
+        Sleep(50)
+    }
+
+    SendEvent("r")
+    lastSend := A_TickCount
+
+    loop {
+        col := PixelGetColor(555, 348, "RGB")
+
+        if (ColorMatch(col, 0xE1E3E9, 10))
+            break
+
+        if (A_TickCount - lastSend >= 3000) {
+            SendEvent("r")
+            lastSend := A_TickCount
+        }
+
+        Sleep(50)
+    }
+Sleep 500
+SendEvent("{Enter}")
+Sleep 6000
+MainMacro()
 
     isRunning := true   
 }
@@ -1098,7 +1157,7 @@ MainMacro() {
 
     if (firstRun) {
         firstRun := false
-        Sleep 3000   ; give game time to settle
+        Sleep 3000  
     }
 
     StartClicking(30)
@@ -1125,7 +1184,7 @@ StartClicking(delay := 30) {
 
     FileAppend "", flagFile
 
-    Run A_ScriptDir "\Autoclicker.ahk"
+    Run A_ScriptDir "\Files\Autoclicker.ahk"
 }
 
 StopClicking() {
@@ -1335,7 +1394,7 @@ PauseClicking() {
 
     FileAppend "", pauseFile
 
-    SetTimer ResumeClicking, -2000
+    SetTimer ResumeClicking, -4000
 }
 
 ResumeClicking(*) {
@@ -1882,22 +1941,26 @@ RatioDown(*) {
     }
 }
 HandlePause(*) {
-    global isPaused, pauseFile
+    global isPaused, lastPauseToggle
 
-    isPaused := !isPaused  
+    if (A_TickCount - lastPauseToggle < 250)
+        return
+
+    lastPauseToggle := A_TickCount
+    isPaused := !isPaused
 
     if (isPaused) {
-        FileAppend "", pauseFile   
+        FileAppend "", pauseFile
         ToolTip("⏸ Paused")
     } else {
-        FileDelete pauseFile      
+        FileDelete pauseFile
         ToolTip("▶ Resumed")
     }
 
-    SetTimer(() => ToolTip(), -3000)
+    SetTimer(() => ToolTip(), -1000)
 }
 WaitIfPaused() {
     global isPaused
     while (isPaused)
-        Sleep 50
+        Sleep 100
 }
