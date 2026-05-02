@@ -857,7 +857,7 @@ if (matchAll) {
         Sleep(50)
     }
 Sleep 800
-SendEvent("{Enter}")
+SendEvent "{Enter}"
 Sleep 6000
 MainMacro()
 return
@@ -1144,8 +1144,8 @@ WaitMapLoad() {
 
         Sleep(50)
     }
-Sleep 800
-SendEvent("{Enter}")
+Sleep 700
+SendEvent "{Enter}"
 Sleep 6000
 MainMacro()
 
