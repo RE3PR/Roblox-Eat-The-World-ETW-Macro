@@ -45,9 +45,9 @@ This macro ensures continuous grinding in-game with minimal input.
 - Configure `link.txt` with your system values  
 
 ### 4. Run
-- Run `ETW_MACRO_v1.0.1.exe` (recommended)  
+- Run `ETW_MACRO_v1.0.2.exe` (recommended)  
   **OR**
-- Run `ETW_MACRO_v1.0.1.ahk` using AutoHotkey  
+- Run `ETW_MACRO_v1.0.2.ahk` using AutoHotkey  
 
 ---
 
