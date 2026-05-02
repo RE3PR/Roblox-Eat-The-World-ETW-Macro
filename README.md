@@ -8,9 +8,9 @@ You may use, modify, and distribute this software, but if you distribute it (eve
 
 ## 📦 Files Included
 
-- `ETW_MACRO_v1.0.1.ahk` – Main AutoHotkey macro script  
-- `ETW_MACRO_v1.0.1.exe` – Compiled executable version  
-- `Autoclicker.ahk` – Autoclicker module  
+- `ETW_MACRO_v1.0.2.ahk` – Main AutoHotkey macro script  
+- `ETW_MACRO_v1.0.2.exe` – Compiled executable version
+- `Files` - Contains Autohotkey files needed to work
 - `Gdip_all.ahk` – Screen capture library for AutoHotkey  
 - `link.txt` – Personal configuration file required for macro setup  
 - `version.txt` – Tracks current macro version  
@@ -34,10 +34,10 @@ This macro ensures continuous grinding in-game with minimal input.
 
 ### 1. Download Requirements
 - Install **Tesseract OCR**:  
-  https://github.com/UB-Mannheim/tesseract/wiki
+  Required for reading text: [Download here](https://github.com/UB-Mannheim/tesseract/wiki)
 
 ### 2. Install AutoHotkey
-- Required for `.ahk` scripts: https://www.autohotkey.com/
+- Required for `.ahk` scripts: [Download](https://www.autohotkey.com/)
 
 ### 3. Setup
 - Download this repository  
