@@ -647,17 +647,25 @@ MegaMaps()
 }
 
 MegaMaps() {
+Loop {
+    checkStart := PixelGetColor(244, 998, "RGB")
+
+    if !ColorMatch(checkStart, 0x3C8F26, 15)
+        break
 
     Loop {
-        WaitIfPaused()
-        megaCheck := PixelGetColor(241, 1004, "RGB")
+        checkStop := PixelGetColor(260, 974, "RGB")
 
-        if (ColorMatch(megaCheck, 0x1A1F20, 10))
+        if ColorMatch(checkStop, 0x1A1D1D, 15)
             break
 
-        Click 172, 971
-        Sleep 500
+        Click(172, 971)
+        Sleep(50)
     }
+
+    break  
+}
+
 
     checkBlack := PixelGetColor(35, 1009, "RGB")
     if (!ColorMatch(checkBlack, 0x000000, 15)) {
@@ -820,6 +828,7 @@ for mapName, pixels in maps {
                 break
             }
         }
+
 if (matchAll) {
 
 
@@ -856,8 +865,16 @@ if (matchAll) {
 
         Sleep(50)
     }
-Sleep 500
-SendEvent "{Enter}"
+Sleep 200
+Loop {
+    color := PixelGetColor(824, 993, "RGB")
+
+   if (ColorMatch(color, 0xE1E1E1, 10))
+        break
+
+    SendEvent "{Enter}"
+    Sleep 300  
+}
 Sleep 6000
 MainMacro()
 return
@@ -1144,8 +1161,16 @@ WaitMapLoad() {
 
         Sleep(50)
     }
-Sleep 500
-SendEvent "{Enter}"
+Sleep 200
+Loop {
+    color := PixelGetColor(824, 993, "RGB")
+
+   if (ColorMatch(color, 0xE1E1E1, 10))
+        break
+
+    SendEvent "{Enter}"
+    Sleep 300  
+}
 Sleep 6000
 MainMacro()
 
@@ -1153,13 +1178,6 @@ MainMacro()
 }
 MainMacro() {
     WaitIfPaused()
-    static firstRun := true
-
-    if (firstRun) {
-        firstRun := false
-        Sleep 3000  
-    }
-
     StartClicking(30)
     SetTimer Sell, 100
     Sleep 400
