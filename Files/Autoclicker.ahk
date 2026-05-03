@@ -14,7 +14,6 @@ speedFile := A_Temp "\speed.txt"
 delay := 30
 
 Loop {
-  
     if !FileExist(flagFile)
         break
 
@@ -23,17 +22,11 @@ Loop {
         continue
     }
 
+    Click clickX, clickY
+
     if FileExist(speedFile) {
         try delay := Integer(FileRead(speedFile))
     }
 
-    Click clickX, clickY
-
-    Loop 5 {
-        if !FileExist(flagFile)
-            break 2
-        if FileExist(pauseFile)
-            break
-        Sleep delay // 5
-    }
+    Sleep delay
 }
