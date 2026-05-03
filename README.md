@@ -56,6 +56,11 @@ This macro ensures continuous grinding in-game with minimal input.
 - Tesseract OCR installed  
 - Roblox installed  
 - Atleast 200k size and multi 15 minimum
+- 1680x1050 display
+
+ **IMPORTANT!**
+- -Set scaling 100% and monitor to **landscape**
+- Any night lights or HDR  or any type of **external color enhanching** must be **turned off**
   
 ---
 
