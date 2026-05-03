@@ -33,6 +33,9 @@ This macro ensures continuous grinding in-game with minimal input.
 
 ## 🚀 How to Run
 
+### 🎥 Watch Tutorial
+- Watch setup guide: https://www.youtube.com/watch?v=YOUR_LINK_HERE
+
 ### 1. Download Requirements
 - Install **Tesseract OCR**:  
   Required for reading text: [Download](https://github.com/UB-Mannheim/tesseract/wiki)
@@ -49,7 +52,6 @@ This macro ensures continuous grinding in-game with minimal input.
 - Run `ETW_MACRO_v1.0.3.exe` (recommended)  
   **OR**
 - Run `ETW_MACRO_v1.0.3.ahk` using AutoHotkey  
-
 ---
 
 ## ⚠️ Requirements
