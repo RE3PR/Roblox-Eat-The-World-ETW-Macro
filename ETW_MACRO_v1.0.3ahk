@@ -166,7 +166,7 @@ for line in StrSplit(data, "`n", "`r") {
     }
 }
 }
-MyGui := Gui("-MinimizeBox", "Eat The World Macro v1.0.2")
+MyGui := Gui("-MinimizeBox", "Eat The World Macro v1.0.3")
 
 MyGui.Add("Tab3", "x10 y10 w380 h280 vMainTabs", ["General", "Keybinds", "Map Selection"])
 
