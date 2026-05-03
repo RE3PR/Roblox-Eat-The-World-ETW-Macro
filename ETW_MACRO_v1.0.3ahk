@@ -718,15 +718,6 @@ Loop {
         }
     }
 
-    Loop {
-        WaitIfPaused()
-        loadColor := PixelGetColor(194, 974, "RGB")
-
-        if (ColorMatch(loadColor, 0x161A1B, 10))
-            break
-
-        Sleep 500
-    }
 
     checkBlack2 := PixelGetColor(35, 1009, "RGB")
 
@@ -1173,7 +1164,6 @@ Loop {
 }
 Sleep 6000
 MainMacro()
-
     isRunning := true   
 }
 MainMacro() {
@@ -1196,12 +1186,13 @@ WaitIfPaused()
 
 StartClicking(delay := 30) {
     flagFile := A_Temp "\clicking.flag"
-
+    
     if FileExist(flagFile)
-        FileDelete flagFile  
-
+        FileDelete flagFile
+    
     FileAppend "", flagFile
-
+    Sleep 50                    
+    
     Run A_ScriptDir "\Files\Autoclicker.ahk"
 }
 
