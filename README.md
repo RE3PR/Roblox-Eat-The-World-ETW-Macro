@@ -34,7 +34,7 @@ This macro ensures continuous grinding in-game with minimal input.
 ## 🚀 How to Run
 
 ### 🎥 Watch Tutorial
-- Watch setup guide: https://www.youtube.com/watch?v=YOUR_LINK_HERE
+- Watch setup guide: [Here](https://www.youtube.com/watch?v=YOUR_LINK_HERE)
 
 ### 1. Download Requirements
 - Install **Tesseract OCR**:  
