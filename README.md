@@ -8,12 +8,13 @@ You may use, modify, and distribute this software, but if you distribute it (eve
 
 ## 📦 Files Included
 
-- `ETW_MACRO_v1.0.2.ahk` – Main AutoHotkey macro script  
-- `ETW_MACRO_v1.0.2.exe` – Compiled executable version
+- `ETW_MACRO_v1.0.3.ahk` – Main AutoHotkey macro script  
+- `ETW_MACRO_v1.0.3.exe` – Compiled executable version
 - `Files` - Contains Autohotkey files needed to work
 - `Gdip_all.ahk` – Screen capture library for AutoHotkey  
 - `link.txt` – Personal configuration file required for macro setup  
-- `version.txt` – Tracks current macro version  
+- `version.txt` – Tracks current macro version
+- `LICENCES` - Contains license for the software
 
 ---
 
