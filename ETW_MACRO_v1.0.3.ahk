@@ -1,4 +1,4 @@
-﻿; Copyright (C) 2026 Your Name
+; Copyright (C) 2026 Your Name
 ; Licensed under GPL-3.0-or-later
 ; See LICENSE file for full license details
 
@@ -884,16 +884,16 @@ if (matchAll) {
 
         Sleep(50)
     }
-Sleep 200
-Loop {
-    color := PixelGetColor(824, 993, "RGB")
+Sleep 500
+ Loop {
+        color := PixelGetColor(63, 605, "RGB")
 
-   if (ColorMatch(color, 0xE1E1E1, 10))
-        break
+        if (ColorMatch(col, 0xFFFFFF, 8))
+            break
 
-    SendEvent "{Enter}"
-    Sleep 300  
-}
+        SendEvent "{Enter}"
+        Sleep 300
+    }
 Sleep 6000
 MainMacro()
 return
@@ -1180,16 +1180,16 @@ WaitMapLoad() {
 
         Sleep(50)
     }
-Sleep 200
-Loop {
-    color := PixelGetColor(824, 993, "RGB")
+Sleep 500
+ Loop {
+        color := PixelGetColor(63, 605, "RGB")
 
-   if (ColorMatch(color, 0xE1E1E1, 10))
-        break
+        if (ColorMatch(col, 0xFFFFFF, 8))
+            break
 
-    SendEvent "{Enter}"
-    Sleep 300  
-}
+        SendEvent "{Enter}"
+        Sleep 300
+    }
 Sleep 6000
 MainMacro()
     isRunning := true   
