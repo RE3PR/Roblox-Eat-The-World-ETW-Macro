@@ -851,13 +851,13 @@ for mapName, pixels in maps {
 if (matchAll) {
 
 
-    SendEvent("{Esc}")
+     SendEvent("{Esc}")
     lastSend := A_TickCount
 
     loop {
-        col := PixelGetColor(1107, 860, "RGB")
+        col := PixelGetColor(1136, 207, "RGB")
 
-        if (ColorMatch(col, 0x7482AF, 10))
+        if (ColorMatch(col, 0x5E5A60, 15))
             break
 
         if (A_TickCount - lastSend >= 3000) {
@@ -868,13 +868,14 @@ if (matchAll) {
         Sleep(50)
     }
 
+    Sleep(150)
     SendEvent("r")
     lastSend := A_TickCount
 
     loop {
-        col := PixelGetColor(555, 348, "RGB")
+        col := PixelGetColor(1132, 343, "RGB")
 
-        if (ColorMatch(col, 0xE1E3E9, 10))
+        if (ColorMatch(col, 0xD5D7DD, 10))
             break
 
         if (A_TickCount - lastSend >= 3000) {
@@ -884,17 +885,20 @@ if (matchAll) {
 
         Sleep(50)
     }
-Sleep 500
- Loop {
-        color := PixelGetColor(63, 605, "RGB")
+
+    Sleep(250)
+
+    Loop {
+        col := PixelGetColor(63, 605, "RGB")
 
         if (ColorMatch(col, 0xFFFFFF, 8))
             break
 
-        SendEvent "{Enter}"
-        Sleep 300
+        SendEvent("{Enter}")
+        Sleep(300)
     }
-Sleep 6000
+
+Sleep(6000)
 MainMacro()
 return
 }
@@ -1147,13 +1151,13 @@ WaitMapLoad() {
         Sleep 500
     }
 
-    SendEvent("{Esc}")
+ SendEvent("{Esc}")
     lastSend := A_TickCount
 
     loop {
-        col := PixelGetColor(1107, 860, "RGB")
+        col := PixelGetColor(1136, 207, "RGB")
 
-        if (ColorMatch(col, 0x7482AF, 10))
+        if (ColorMatch(col, 0x5E5A60, 15))
             break
 
         if (A_TickCount - lastSend >= 3000) {
@@ -1164,13 +1168,14 @@ WaitMapLoad() {
         Sleep(50)
     }
 
+    Sleep(150)
     SendEvent("r")
     lastSend := A_TickCount
 
     loop {
-        col := PixelGetColor(555, 348, "RGB")
+        col := PixelGetColor(1132, 343, "RGB")
 
-        if (ColorMatch(col, 0xE1E3E9, 10))
+        if (ColorMatch(col, 0xD5D7DD, 10))
             break
 
         if (A_TickCount - lastSend >= 3000) {
@@ -1180,17 +1185,20 @@ WaitMapLoad() {
 
         Sleep(50)
     }
-Sleep 500
- Loop {
-        color := PixelGetColor(63, 605, "RGB")
+
+    Sleep(250)
+
+    Loop {
+        col := PixelGetColor(63, 605, "RGB")
 
         if (ColorMatch(col, 0xFFFFFF, 8))
             break
 
-        SendEvent "{Enter}"
-        Sleep 300
+        SendEvent("{Enter}")
+        Sleep(300)
     }
-Sleep 6000
+
+Sleep(6000)
 MainMacro()
     isRunning := true   
 }
