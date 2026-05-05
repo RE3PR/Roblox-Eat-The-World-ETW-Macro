@@ -204,7 +204,11 @@ for line in StrSplit(data, "`n", "`r") {
     }
 }
 }
-MyGui := Gui("-MinimizeBox", "Eat The World Macro v1.0.3")
+localVer := GetLocalVersion(versionFile)
+if (localVer = "")
+    localVer := "Unknown"
+
+MyGui := Gui("-MinimizeBox", "Eat The World Macro v" localVer)
 
 MyGui.Add("Tab3", "x10 y10 w380 h280 vMainTabs", ["General", "Keybinds", "Map Selection"])
 
