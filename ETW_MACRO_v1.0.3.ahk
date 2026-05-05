@@ -914,14 +914,13 @@ for mapName, pixels in maps {
 
 if (matchAll) {
 
-
      SendEvent("{Esc}")
     lastSend := A_TickCount
 
     loop {
-        col := PixelGetColor(1136, 207, "RGB")
+        col := PixelGetColor(793, 277, "RGB")
 
-        if (ColorMatch(col, 0x5E5A60, 15))
+        if (ColorMatch(col, 0x202227, 15))
             break
 
         if (A_TickCount - lastSend >= 3000) {
@@ -1218,10 +1217,10 @@ WaitMapLoad() {
  SendEvent("{Esc}")
     lastSend := A_TickCount
 
-    loop {
-        col := PixelGetColor(1136, 207, "RGB")
+loop {
+        col := PixelGetColor(793, 277, "RGB")
 
-        if (ColorMatch(col, 0x5E5A60, 15))
+        if (ColorMatch(col, 0x202227, 15))
             break
 
         if (A_TickCount - lastSend >= 3000) {
