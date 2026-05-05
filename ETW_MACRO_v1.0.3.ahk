@@ -607,7 +607,6 @@ Loop {
     Sleep 50
 }
 
-; --- Run black check either way ---
 color1 := PixelGetColor(60, 692, "RGB")
 
 if (!ColorMatch(color1, 0x000000, 10)) {
@@ -771,24 +770,47 @@ if (!ColorMatch(checkBlack, 0x000000, 15)) {
 
         Sleep 250
 
-        Loop {
-            WaitIfPaused()
-            whiteCheck := PixelGetColor(55, 598, "RGB")
+Loop {
+    WaitIfPaused()
 
-            if (ColorMatch(whiteCheck, 0xFFFFFF, 10))
-                break
+    whiteCheck := PixelGetColor(55, 598, "RGB")
+    if (ColorMatch(whiteCheck, 0xFFFFFF, 10))
+        break
 
-            Click 697, 736
-            Sleep 1000
-        }
+    Loop 5 {
+        WaitIfPaused()
+
+        whiteCheck := PixelGetColor(55, 598, "RGB")
+        if (ColorMatch(whiteCheck, 0xFFFFFF, 10))
+            break 2  
+
+        Click 697, 736
+        Sleep 1000
     }
+
+    Sleep 3000
+}
+    }
+
+startTime := A_TickCount
 
 Loop {
     current := PixelGetColor(229, 1005, "RGB")
-    if (ColorMatch(current, 0x1B1E1F, 10))
+
+    elapsed := (A_TickCount - startTime) // 1000
+
+    if (ColorMatch(current, 0x1B1E1F, 10)) {
         break
+    }
+
+    if (A_TickCount - startTime >= 10000) {
+        GoEndLogic()
+        return
+    }
+
     Sleep 50
 }
+
 
 checkBlack2 := PixelGetColor(35, 1009, "RGB")
 if (!ColorMatch(checkBlack2, 0x000000, 15)) {
@@ -1742,7 +1764,9 @@ if (CheckColor(181, 1001, 0x3C8B26, 10)) {
 
 GoEndLogic()
 }
+g:: GoEndLogic()
 
+h::Exitapp
 GoEndLogic() {
 
     if (CheckColor(175, 998, 0x3C8D26, 10)) {
@@ -1760,20 +1784,28 @@ GoEndLogic() {
     Loop {
         WaitIfPaused()
         Click 61, 603
-        Sleep 1000
+        Sleep 500
 
         if (CheckColor(704, 431, 0x181A1B, 10))
             break
     }
 
-    Loop {
+Loop {
+    WaitIfPaused()
+    if (CheckColor(18, 599, 0xE2E2E2, 10))
+        break
+
+    Loop 5 {
         WaitIfPaused()
+        if (CheckColor(18, 599, 0xE2E2E2, 10))
+            break 2
+
         Click 697, 692
         Sleep 1000
-
-        if (CheckColor(18, 599, 0xE2E2E2, 10))
-            break
     }
+
+    Sleep 3000
+}
 
     Loop {
         WaitIfPaused()
@@ -1782,7 +1814,7 @@ GoEndLogic() {
             break
     }
 
-    Sleep 7000
+    Sleep 10000
     StartLogic()
     SetTimer(MainLoop, 10000)
     SetTimer(CheckCrash, 10000)
