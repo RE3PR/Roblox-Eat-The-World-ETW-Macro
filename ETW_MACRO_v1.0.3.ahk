@@ -81,6 +81,13 @@ GetOnlineVersion(url) {
 CheckVersion() {
     global versionFile, versionURL
 
+    githubLink := "https://github.com/RE3PR/Roblox-Eat-The-World-ETW-Macro"
+
+    if !FileExist(versionFile) {
+        ShowUpdateGUI("version.txt not found", githubLink)
+        return
+    }
+
     localVer := CleanVersion(GetLocalVersion(versionFile))
     onlineVer := CleanVersion(GetOnlineVersion(versionURL))
 
@@ -88,10 +95,41 @@ CheckVersion() {
         return
 
     if (localVer != onlineVer) {
-        MsgBox "Your macro is OUTDATED.`n`nInstalled: " localVer "`nLatest: " onlineVer
+        ShowUpdateGUI(
+            "Your macro is OUTDATED.`n`nInstalled: " localVer "`nLatest: " onlineVer,
+            githubLink
+        )
     }
 }
+ShowUpdateGUI(message, link) {
+    g := Gui("+AlwaysOnTop", "Update Required")
+    g.SetFont("s10")
 
+    g.Add("Text", "w320", message)
+
+    linkText := g.Add("Text", "w320 cBlue", "Click here to update on GitHub")
+    linkText.OnEvent("Click", (*) => OpenLinkWithBrowser(link))
+
+    done := false
+
+    g.Add("Button", "y+15 w100", "OK").OnEvent("Click", (*) => (
+        done := true,
+        g.Destroy()
+    ))
+
+    g.Show()
+
+    while (!done)
+        Sleep 50
+}
+
+OpenLinkWithBrowser(link) {
+    try {
+        Run(link)  
+    } catch {
+        MsgBox "Failed to open link."
+    }
+}
 CleanVersion(str) {
     str := Trim(str)
     str := StrReplace(str, "`r")
