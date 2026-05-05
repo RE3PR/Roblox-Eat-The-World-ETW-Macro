@@ -234,7 +234,7 @@ btnEdit.OnEvent("Click", OpenEditGui)
 MyGui.Add("Text", "x30 y140", "Browser:")
 
 ddlBrowser := MyGui.Add("DropDownList", "x180 y135 w150 vBrowser",
-    ["Google Chrome","Microsoft Edge","Mozilla Firefox","Opera","Opera GX","Brave","Vivaldi","Safari"])
+    ["Google Chrome","Microsoft Edge","Mozilla Firefox","Opera","Opera GX","Brave","Vivaldi","Safari","360 Extreme Browser"])
 
 browserList := ["Google Chrome","Microsoft Edge","Mozilla Firefox","Opera","Opera GX","Brave","Vivaldi","Safari"]
 
@@ -552,7 +552,7 @@ StartScript(*) {
 	
     isRunning := true
 
-    if !WinExist("ahk_exe RobloxPlayerBeta.exe") {
+    if !WinExist("ahk_exe Beta.exe") {
         Rejoin()
     } else {
         WinActivate("ahk_exe RobloxPlayerBeta.exe")
@@ -1922,6 +1922,8 @@ RunBrowser(link) {
 
             case "Vivaldi":
                 Run('vivaldi.exe "' link '"')
+            case "360 Extreme Browser":
+                 Run(link)
 
             default:
                 Run(link)
@@ -1955,6 +1957,9 @@ CloseBrowser() {
 
         case "Vivaldi":
             WinClose("ahk_exe vivaldi.exe")
+        case "360 Extreme Browser":
+            WinClose "ahk_exe 360mlupdate.exe"
+           
     }
 }
 
