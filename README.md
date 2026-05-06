@@ -12,10 +12,12 @@ You may use, modify, and distribute this software, but if you distribute it (eve
 - `ETW_MACRO_v1.0.3.exe` – Compiled executable version
 - `Files` - Contains Autohotkey files needed to work
 - `Gdip_all.ahk` – Screen capture library for AutoHotkey  
-- `link.txt` – Personal configuration file required for macro setup  
 - `version.txt` – Tracks current macro version
 - `LICENCES` - Contains license for the software
 
+> **Note!**  
+> A `link.txt` file is saved in `<User>/AppData/Roaming/ETWMacro/link.txt`.  
+> `link.txt` – Personal configuration file required for macro setup.
 ---
 
 ## ⚙️ Features
