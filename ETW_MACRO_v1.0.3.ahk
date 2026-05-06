@@ -61,16 +61,27 @@ if !DirExist(settingsDir)
 
 global linkFile := settingsDir "\link.txt"
 
-repoFile := A_ScriptDir "\link.txt"
+global linkFile := settingsDir "\link.txt"
+; Create link.txt if it doesn't exist
+if !FileExist(linkFile) {
+    defaultContent := ""
+    defaultContent .= "link=`n"
+    defaultContent .= "exit=o`n"
+    defaultContent .= "pause=p`n"
+    defaultContent .= "language=English`n"
+    defaultContent .= "device=Windows`n"
+    defaultContent .= "browser=Google Chrome`n"
+    defaultContent .= "upgrade=Size`n"
+    defaultContent .= "ratio=5.5`n"
 
-if !FileExist(linkFile) && FileExist(repoFile) {
-    FileCopy(repoFile, linkFile, true)
-}
+    defaultContent .= "map_Studville=0`n"
+    defaultContent .= "map_MiddleRobloxia=0`n"
+    defaultContent .= "map_BlockTown=1`n"
+    defaultContent .= "map_MegaGrid=1`n"
+    defaultContent .= "map_MegaBaseplate=1`n"
+    defaultContent .= "map_TownOfRobloxia=1`n"
 
-oldFile := A_ScriptDir "\link.txt"
-
-if FileExist(oldFile) && !FileExist(linkFile) {
-    FileCopy(oldFile, linkFile, true)
+    FileAppend(defaultContent, linkFile)
 }
 
 versionFile := A_ScriptDir "\version.txt"
