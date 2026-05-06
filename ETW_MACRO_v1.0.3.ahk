@@ -1790,9 +1790,7 @@ if (CheckColor(181, 1001, 0x3C8B26, 10)) {
 
 GoEndLogic()
 }
-g:: GoEndLogic()
 
-h::Exitapp
 GoEndLogic() {
 
     if (CheckColor(175, 998, 0x3C8D26, 10)) {
