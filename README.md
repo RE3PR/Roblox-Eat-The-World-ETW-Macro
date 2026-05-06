@@ -21,7 +21,7 @@ This macro ensures continuous grinding in-game with minimal input.
 
 ## ⚠️ Requirements
 
-- Tesseract OCR installed  
+- Tesseract OCR & Autohotkey v2, installed  
 - Roblox installed  
 - Minimum **200k size** and **15x multiplier**  
 - Display resolution set to **1680×1050**
