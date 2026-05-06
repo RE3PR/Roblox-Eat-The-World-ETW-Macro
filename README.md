@@ -14,10 +14,13 @@ You may use, modify, and distribute this software, but if you distribute it (eve
 - `Gdip_all.ahk` – Screen capture library for AutoHotkey  
 - `version.txt` – Tracks current macro version
 - `LICENCES` - Contains license for the software
+  
+> ⚠️ **Note**  
+> The file `link.txt` is automatically created at:  
+> `<User>/AppData/Roaming/ETWMacro/link.txt`  
+>
+> This file stores your personal configuration and is required for the macro to function correctly.
 
-> **Note!**  
-> A `link.txt` file is saved in `<User>/AppData/Roaming/ETWMacro/link.txt`.  
-> `link.txt` – Personal configuration file required for macro setup.
 ---
 
 ## ⚙️ Features
