@@ -21,11 +21,11 @@ This macro ensures continuous grinding in-game with minimal input.
 
 ## ⚠️ Requirements
 
-- Tesseract OCR & Autohotkey v2, installed  
+- Tesseract OCR and AutoHotkey v2 installed  
 - Roblox installed  
-- Minimum **200k size** and **15x multiplier**  
-- Display resolution set to **1680×1050**
-
+- Minimum player stats: **200k size** and **15x multiplier**  
+- Display resolution: **1680×1050**
+  
 ---
 
 ## 🚀 How to Run
@@ -43,7 +43,6 @@ This macro ensures continuous grinding in-game with minimal input.
 ### 3. Setup
 - Download this repository  
 - Ensure Tesseract is installed and added to PATH  
-- Configure `link.txt` with your system values  
 
 ### 4. Run
 - Run `ETW_MACRO_v1.0.3.exe` (recommended)  
