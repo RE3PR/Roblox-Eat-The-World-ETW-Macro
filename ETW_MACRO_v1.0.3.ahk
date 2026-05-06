@@ -55,7 +55,23 @@ global originalWidth := ""
 global originalHeight := ""
 global originalDPI := ""
 
-global linkFile := A_ScriptDir "\link.txt"
+settingsDir := A_AppData "\ETWMacro"
+if !DirExist(settingsDir)
+    DirCreate(settingsDir)
+
+global linkFile := settingsDir "\link.txt"
+
+repoFile := A_ScriptDir "\link.txt"
+
+if !FileExist(linkFile) && FileExist(repoFile) {
+    FileCopy(repoFile, linkFile, true)
+}
+
+oldFile := A_ScriptDir "\link.txt"
+
+if FileExist(oldFile) && !FileExist(linkFile) {
+    FileCopy(oldFile, linkFile, true)
+}
 
 versionFile := A_ScriptDir "\version.txt"
 versionURL := "https://raw.githubusercontent.com/RE3PR/Roblox-Eat-The-World-ETW-Macro/refs/heads/main/version.txt"
@@ -828,8 +844,8 @@ if (!WaitForMaps()) {
 
 settings := Map()
 
-if FileExist("link.txt") {
-    content := FileRead("link.txt")
+if FileExist(linkFile) {
+    content := FileRead(linkFile)
 
     for line in StrSplit(content, "`n", "`r") {
 
@@ -1549,7 +1565,7 @@ WaitIfPaused()
 DisableAllTimers()
 SetTimer(MainLoop, 10000)
 SetTimer(CheckCrash, 10000)
-    filePath := A_ScriptDir "\link.txt"
+    filePath := linkFile
     if !FileExist(filePath) {
         MsgBox "link.txt not found!"
         return
