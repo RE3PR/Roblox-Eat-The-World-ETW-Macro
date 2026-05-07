@@ -579,13 +579,14 @@ StartScript(*) {
 	
     isRunning := true
 
-    if !WinExist("ahk_exe Beta.exe") {
-        Rejoin()
-    } else {
-        WinActivate("ahk_exe RobloxPlayerBeta.exe")
-        Sleep 2000
-        StartLogic()
-    }
+if !WinExist("ahk_exe RobloxPlayerBeta.exe") {
+    Sleep 430
+    Rejoin()
+} else {
+    WinActivate("ahk_exe RobloxPlayerBeta.exe")
+    Sleep 2000
+    StartLogic()
+}
 
     SetTimer(MainLoop, 10000)
 	SetTimer(CheckCrash, 10000)
@@ -1365,14 +1366,16 @@ WaitIfPaused()
 }
 
 CheckRGB(*) {
-    if (CheckColor(65, 573, 0xBDBDBD, 10)) {
+    if (CheckColor(65, 573, 0xBDBDBD, 10)) { 
         SetTimer(CheckRGB, 0)
         SetTimer(StartOCR, -1)
     }
 }
 
 StartOCR(*) {
-  prevText := ""
+
+
+prevText := ""
 stableCount := 0
 
 Loop {
@@ -1382,18 +1385,16 @@ Loop {
     stableCount := (text = prevText) ? stableCount + 1 : 0
     prevText := text
 
-    if (stableCount >= 3)
+    if (stableCount >= 2)
         break
 
-    Sleep 420
+    Sleep 320
 }
-
 prevText := GetOCR(606, 963, 1127, 1036)
 
 Loop {
     WaitIfPaused()
     text := GetOCR(606, 963, 1127, 1036)
-
 
     if (text != prevText)
         break
@@ -1404,8 +1405,7 @@ Loop {
 prevText := text
 stableCount := 0
 
-ToolTip()
-
+    
     StopClicking()
 	SetTimer OCRChecker, 0
 	Sleep 100
