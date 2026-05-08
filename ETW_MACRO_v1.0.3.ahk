@@ -54,6 +54,7 @@ global isPaused := false
 global originalWidth := ""
 global originalHeight := ""
 global originalDPI := ""
+global logFile := ""
 
 settingsDir := A_AppData "\ETWMacro"
 if !DirExist(settingsDir)
@@ -82,6 +83,42 @@ if !FileExist(linkFile) {
     defaultContent .= "map_TownOfRobloxia=1`n"
 
     FileAppend(defaultContent, linkFile)
+}
+
+
+CreateLogFile() {
+    global logFile
+
+    logsDir := A_ScriptDir "\Logs"
+
+    ; Create Logs folder if missing
+    if !DirExist(logsDir)
+        DirCreate(logsDir)
+
+    ; File name based on current time
+    fileTime := FormatTime(, "yyyy-MM-dd_HH-mm-ss")
+
+    ; Example:
+    ; Logs\2026-05-08_17-30-15.txt
+    logFile := logsDir "\" fileTime ".txt"
+}
+
+global lastLogText := ""
+
+WriteLog(text) {
+    global logFile, lastLogText
+
+    if (logFile = "")
+        CreateLogFile()
+
+    ; block duplicate consecutive logs
+    if (text = lastLogText)
+        return
+
+    lastLogText := text
+
+    timestamp := FormatTime(, "HH:mm:ss")
+    FileAppend("[" timestamp "] " text "`n", logFile)
 }
 
 versionFile := A_ScriptDir "\version.txt"
@@ -572,24 +609,23 @@ StartScript(*) {
 	Sleep 2000 
     SetScaling(96)  
     
-
     Hotkey(ExitKey, HandleExit, "On")
  
     MyGui.Hide()
-	
+    WriteLog("Running " MyGui.Title)
     isRunning := true
 
-if !WinExist("ahk_exe RobloxPlayerBeta.exe") {
+if !WinExist("ahk_exe RobloxPlayerBeta.exe") { ;Checking if roblox is running
     Sleep 430
     Rejoin()
 } else {
-    WinActivate("ahk_exe RobloxPlayerBeta.exe")
+    WinActivate("ahk_exe RobloxPlayerBeta.exe")  ;If Roblox is running go to StartLogic
+    WriteLog("Roblox is running")
     Sleep 2000
     StartLogic()
 }
-
-    SetTimer(MainLoop, 10000)
-	SetTimer(CheckCrash, 10000)
+    SetTimer(MainLoop, 10000) ;Timer to check if Roblox is running
+	SetTimer(CheckCrash, 10000) ;Timer to check if user lost connection
 }
 
 ExitScript(*) => ExitApp()
@@ -620,6 +656,7 @@ StartLogic() {
 
 start := A_TickCount
 rgbDetected := false
+WriteLog("Roblox is fullscreen")
 
 Loop {
     current := PixelGetColor(229, 1005, "RGB")
@@ -629,23 +666,28 @@ Loop {
         break
     }
 
-    if (A_TickCount - start > 4000) ; 4 seconds timeout
+    if (A_TickCount - start > 4000) {
         break
+    }
 
     Sleep 50
 }
 
 color1 := PixelGetColor(60, 692, "RGB")
 
-if (!ColorMatch(color1, 0x000000, 10)) {
+if (!ColorMatch(color1, 0x000000, 10)) {  ;Checking if you are in ETW
+    WriteLog("Not in Eat The World, going to rejoin")
     Rejoin()
     return
 }
+
+WriteLog("In Eat The World")
 color2 := PixelGetColor(1525, 225, "RGB")
 color3 := PixelGetColor(32, 576, "RGB")
 color4 := PixelGetColor(1410, 188, "RGB")
 
-if (ColorMatch(color2, 0xD10000, 12)) {
+if (ColorMatch(color2, 0xD10000, 12)) {  ;Checking any blocking UI's
+    WriteLog("Shop/Nametag Menu detected, closing it")
     Click 1452, 241
     Sleep 400
 }
@@ -655,6 +697,7 @@ if (!ColorMatch(color3, 0xFFFFFF, 10) && ColorMatch(color4, 0xD10000, 12)) {
     extraColor := PixelGetColor(518, 280, "RGB")
 
     if (ColorMatch(extraColor, 0xE70000, 12)) {
+        WriteLog("Collecting WheelSpin")
         Click 630, 865
         Sleep 500
     }
@@ -663,13 +706,14 @@ if (!ColorMatch(color3, 0xFFFFFF, 10) && ColorMatch(color4, 0xD10000, 12)) {
 }
 
 if (CheckColor(65, 571, 0xBDBDBD, 10)) {
-
+    WriteLog("Crates Detected")
     if (!ColorMatch(color4, 0xD10000, 12)) {
-        Click 67, 575
+        WriteLog("Opening Crates Menu")
+        Click 40, 550
         Sleep 300
     }
 
-    detected := []
+   detected := []
 
     CheckAndStore(checkX, checkY, clickX, clickY) {
         col := PixelGetColor(checkX, checkY, "RGB")
@@ -699,6 +743,7 @@ if (CheckColor(65, 571, 0xBDBDBD, 10)) {
             pos := detected[A_Index]
 
             Click pos[1], pos[2]
+            WriteLog("Collecting Crates")
 
             if (A_Index < lastIndex)
                 Sleep 3000
@@ -709,9 +754,10 @@ if (CheckColor(65, 571, 0xBDBDBD, 10)) {
 
     if (ColorMatch(extraColor, 0xE70000, 12)) {
         Sleep 3000
+        WriteLog("Collecting WheelSpin")
         Click 655, 922
     }
-
+    WriteLog("Closing Crates Menu")
     Click 1410, 221
 
 } else {
@@ -722,8 +768,10 @@ if (CheckColor(65, 571, 0xBDBDBD, 10)) {
         color5 := PixelGetColor(518, 280, "RGB")
 
         if (ColorMatch(color5, 0xE70000, 12)) {
-            Click 776, 878
+            WriteLog("Collecting WheelSpin")
+            Click 655, 922
             Sleep 500
+            WriteLog("Closing Crates Menu")
             Click 1414, 224
         }
     }
@@ -744,7 +792,8 @@ Loop {
 
         if ColorMatch(checkStop, 0x1A1D1D, 15)
             break
-
+        
+        WriteLog("Selling")
         Click(172, 971)
         Sleep(50)
     }
@@ -761,6 +810,7 @@ Loop {
 
 checkBlack := PixelGetColor(35, 1009, "RGB")
 if (!ColorMatch(checkBlack, 0x000000, 15)) {
+    WriteLog("Not in private, rejoining")
     Rejoin()
     return
 }
@@ -775,10 +825,11 @@ if (!ColorMatch(checkBlack, 0x000000, 15)) {
 
             if (ColorMatch(checkColor, 0x181A1B, 10))
                 break
-
+            
+            WriteLog("Opening Mega Maps Menu")
             Click 62, 648
-
             Sleep 200
+
             checkColor := PixelGetColor(698, 608, "RGB")
 
             if (ColorMatch(checkColor, 0x181A1B, 10))
@@ -786,6 +837,7 @@ if (!ColorMatch(checkBlack, 0x000000, 15)) {
 
             Loop {
                 WaitIfPaused()
+                WriteLog("Attempting to open Mega Maps Menu")
                 Click 62, 648
                 Sleep 1000
 
@@ -811,7 +863,7 @@ Loop {
         whiteCheck := PixelGetColor(55, 598, "RGB")
         if (ColorMatch(whiteCheck, 0xFFFFFF, 10))
             break 2  
-
+        WriteLog("Joining Mega Maps")
         Click 697, 736
         Sleep 1000
     }
@@ -832,6 +884,7 @@ Loop {
     }
 
     if (A_TickCount - startTime >= 10000) {
+        WriteLog("Rejoining roblox due to bug")
         GoEndLogic()
         return
     }
@@ -842,10 +895,10 @@ Loop {
 
 checkBlack2 := PixelGetColor(35, 1009, "RGB")
 if (!ColorMatch(checkBlack2, 0x000000, 15)) {
+    WriteLog("Not in private, rejoining")
     Rejoin()
     return
 }
-
     CheckSelectedMap()
 }
 
@@ -940,10 +993,15 @@ for mapName, pixels in maps {
             }
         }
 
-if (matchAll) {
+ if (matchAll)
+            WriteLog("Map detected")
+        else
+            WriteLog("Waiting for map")
 
-     SendEvent("{Esc}")
-    lastSend := A_TickCount
+        if (matchAll) {
+         SendEvent("{Esc}")
+         WriteLog("Sending Esc")
+         lastSend := A_TickCount
 
     loop {
         col := PixelGetColor(793, 277, "RGB")
@@ -953,6 +1011,8 @@ if (matchAll) {
 
         if (A_TickCount - lastSend >= 3000) {
             SendEvent("{Esc}")
+            WriteLog("Sending Esc")
+            
             lastSend := A_TickCount
         }
 
@@ -961,6 +1021,7 @@ if (matchAll) {
 
     Sleep(150)
     SendEvent("r")
+    WriteLog("Sending R")
     lastSend := A_TickCount
 
     loop {
@@ -971,6 +1032,7 @@ if (matchAll) {
 
         if (A_TickCount - lastSend >= 3000) {
             SendEvent("r")
+            WriteLog("Sending R")
             lastSend := A_TickCount
         }
 
@@ -986,9 +1048,11 @@ if (matchAll) {
             break
 
         SendEvent("{Enter}")
+        WriteLog("Sending Enter")
         Sleep(300)
     }
 
+WriteLog("Avatar reset")
 Sleep(6000)
 MainMacro()
 return
@@ -1070,7 +1134,7 @@ MapSelection() {
         mapReady := PixelGetColor(686, 683, "RGB")
         if (CheckColor(686, 683, 0x181A1C, 10))
             break
-
+        WriteLog("Opening Map Menu")
         Click 49, 1000
         Sleep 200
     }
@@ -1079,11 +1143,14 @@ MapSelection() {
     col2 := PixelGetColor(764, 494, "RGB")
 
     if (CheckColor(761, 499, 0x52B04D, 12) || CheckColor(764, 494, 0x397B36, 12)) {
+        WriteLog("Clicking Skip Map")
         Click 760, 673
         Sleep 500
     } else {
+        WriteLog("Clicking Skip Map")
         Click 758, 502
         Sleep 200
+        WriteLog("Clicking Skip Map")
         Click 760, 673
         Sleep 500
     }
@@ -1149,7 +1216,7 @@ Loop {
 
         for check in checks {
             if (CheckColor(check.x, check.y, check.color, check.tol)) {
-
+                WriteLog("Voting map: " mapName "  ")
                 Click (check.HasProp("clickX") ? check.clickX : check.x)
                     , (check.HasProp("clickY") ? check.clickY : check.y)
 
@@ -1173,6 +1240,7 @@ Loop {
         c2 := PixelGetColor(819, 43, "RGB")
 
         if (CheckColor(825, 44, 0xFFFFFF, 10) || CheckColor(819, 43, 0xFFFFFF, 10)) {
+            WriteLog("Clicking Skip Map")
             Click 760, 673
             Sleep 500
 
@@ -1242,10 +1310,11 @@ WaitMapLoad() {
         Sleep 500
     }
 
- SendEvent("{Esc}")
-    lastSend := A_TickCount
+         SendEvent("{Esc}")
+         WriteLog("Sending Esc")
+         lastSend := A_TickCount
 
-loop {
+    loop {
         col := PixelGetColor(793, 277, "RGB")
 
         if (ColorMatch(col, 0x202227, 15))
@@ -1253,6 +1322,8 @@ loop {
 
         if (A_TickCount - lastSend >= 3000) {
             SendEvent("{Esc}")
+            WriteLog("Sending Esc")
+            
             lastSend := A_TickCount
         }
 
@@ -1261,6 +1332,7 @@ loop {
 
     Sleep(150)
     SendEvent("r")
+    WriteLog("Sending R")
     lastSend := A_TickCount
 
     loop {
@@ -1271,6 +1343,7 @@ loop {
 
         if (A_TickCount - lastSend >= 3000) {
             SendEvent("r")
+            WriteLog("Sending R")
             lastSend := A_TickCount
         }
 
@@ -1286,19 +1359,25 @@ loop {
             break
 
         SendEvent("{Enter}")
+        WriteLog("Sending Enter")
         Sleep(300)
     }
 
+WriteLog("Avatar reset")
 Sleep(6000)
 MainMacro()
-    isRunning := true   
+isRunning := true   
 }
+
+
 MainMacro() {
     WaitIfPaused()
+    WriteLog("Starting Autoclicker & Checkers")
     StartClicking(30)
     SetTimer Sell, 100
     Sleep 400
     SetTimer CheckRGB, 1000
+    Sleep 4000
     SetTimer OCRChecker, 2000
 }
 
@@ -1312,15 +1391,46 @@ WaitIfPaused()
 }
 
 StartClicking(delay := 30) {
+    global flagFile
+
     flagFile := A_Temp "\clicking.flag"
-    
+
+    ; clean old state
     if FileExist(flagFile)
-        FileDelete flagFile
-    
-    FileAppend "", flagFile
-    Sleep 50                    
-    
-    Run A_ScriptDir "\Files\Autoclicker.ahk"
+        FileDelete(flagFile)
+
+    attempt := 0
+
+    while true {
+        attempt++
+        WriteLog("Autoclicker start attempt " attempt)
+
+        Run A_ScriptDir "\Files\Autoclicker.ahk"
+
+        startTime := A_TickCount
+        success := false
+
+        ; wait for autoclicker to CONFIRM it started
+        while (A_TickCount - startTime < 5000) {
+
+            WaitIfPaused()
+
+            if FileExist(flagFile) {
+                success := true
+                break
+            }
+
+            Sleep 50
+        }
+
+        if success {
+            WriteLog("Autoclicker started successfully")
+            return true
+        }
+
+        WriteLog("Autoclicker failed, retrying...")
+        Sleep 1500
+    }
 }
 
 StopClicking() {
@@ -1342,22 +1452,28 @@ WaitIfPaused()
     SetTimer OCRChecker, 0
     StartClicking(150)
 
-    Loop {
-        WaitIfPaused()
-        if (CheckColor(1484, 997, 0x3C8F26, 12))
-            break
-        Sleep 50
+Loop {
+    WaitIfPaused()
+
+    if (CheckColor(1484, 997, 0x3C8F26, 12)) {
+        WriteLog("Max Size detected")
+        break
     }
+
+    Sleep 50
+}
 
     StopClicking()
     
 
     Loop {
         WaitIfPaused()
+        WriteLog("Selling")
         Click 178, 971
         Sleep 200
 
         if (CheckColor(184, 1000, 0x191C1D, 10)) {
+            WriteLog("Going to vote map")
             MapSelection()
             break
         }
@@ -1367,14 +1483,13 @@ WaitIfPaused()
 
 CheckRGB(*) {
     if (CheckColor(65, 573, 0xBDBDBD, 10)) { 
+        WriteLog("Reward (Crate) Ready")
         SetTimer(CheckRGB, 0)
         SetTimer(StartOCR, -1)
     }
 }
 
 StartOCR(*) {
-
-
 prevText := ""
 stableCount := 0
 
@@ -1405,37 +1520,49 @@ Loop {
 prevText := text
 stableCount := 0
 
-    
     StopClicking()
 	SetTimer OCRChecker, 0
 	Sleep 100
+    WriteLog("Opening Crates Menu")
     Click 67, 575
     Sleep 150
 
-    detected := []
+ detected := []
 
-    CheckAndStore(&detected, 1051, 425, 958, 407)
-    CheckAndStore(&detected, 1247, 425, 1152, 414)
-    CheckAndStore(&detected, 1336, 423, 1348, 407)
-    CheckAndStore(&detected, 1051, 604, 960, 588)
-    CheckAndStore(&detected, 1247, 609, 1154, 583)
-    CheckAndStore(&detected, 1442, 607, 1349, 585)
-    CheckAndStore(&detected, 1051, 788, 958, 772)
-    CheckAndStore(&detected, 1247, 792, 1153, 768)
-    CheckAndStore(&detected, 1442, 788, 1348, 768)
+    CheckAndStore(checkX, checkY, clickX, clickY) {
+        col := PixelGetColor(checkX, checkY, "RGB")
 
-lastIndex := detected.Length
+        if (ColorMatch(col, 0xFFFFFF, 10)) {
+            detected.Push([clickX, clickY])
+        }
+    }
+
+    CheckAndStore(1051, 425, 958, 407)
+    CheckAndStore(1247, 425, 1152, 414)
+    CheckAndStore(1336, 423, 1348, 407)
+
+    CheckAndStore(1051, 604, 960, 588)
+    CheckAndStore(1247, 609, 1154, 583)
+    CheckAndStore(1442, 607, 1349, 585)
+
+    CheckAndStore(1051, 788, 958, 772)
+    CheckAndStore(1247, 792, 1153, 768)
+    CheckAndStore(1442, 788, 1348, 768)
+
+    lastIndex := detected.Length
 
 for i, pos in detected {
     Click pos[1], pos[2]
-
+    WriteLog("Collecting Crates")
 
     if (CheckColor(1301, 718, 0x411E57, 10)) {
+        WriteLog("Last crate detected, going to Upgrade")
         Upgrades()
         return
     }
 
     if (pos[1] == 1348 && pos[2] == 768) {
+        WriteLog("Last crate detected, going to Upgrade")
         Upgrades()
         return
     }
@@ -1446,16 +1573,18 @@ for i, pos in detected {
 
 if (CheckColor(522, 273, 0xE70000, 10)) {
     Sleep 2000
+    WriteLog("Collecting WheelSpin")
     Click 655, 922
 } else {
     if (CheckColor(1410, 188, 0xD10000, 10)
         && CheckColor(518, 280, 0xE70000, 10)) {
-        Click 776, 878
+        WriteLog("Collecting WheelSpin")
+        Click 655, 922
         Sleep 500
         Click 1414, 224
     }
 }
-
+WriteLog("Closing Crates Menu")
 Click 1414, 224
 MainMacro()
 
@@ -1528,7 +1657,7 @@ PauseClicking() {
     isPaused := true
 
     FileAppend "", pauseFile
-
+    WriteLog("Stuck detected, stopping autoclicking")
     SetTimer ResumeClicking, -4000
 }
 
@@ -1538,7 +1667,7 @@ ResumeClicking(*) {
     isPaused := false
 
     FileDelete pauseFile
-
+    WriteLog("Resuming Autoclicking")
     Sleep 200
     ToolTip
 }
@@ -1598,6 +1727,7 @@ for line in StrSplit(content, "`n") {
 }
 
 if (upgradeType = "Coins") {
+    WriteLog("Upgrade = Coins, going to Normal Maps")
     NormalMaps()
     return
 }
@@ -1605,6 +1735,7 @@ if (upgradeType = "Coins") {
     color := PixelGetColor(1411, 207, "RGB")
 
     if (CheckColor(1411, 207, 0xD10000, 10)) {
+        WriteLog("Closing Crate Menu")
         Click 1411, 222
     }
 
@@ -1612,6 +1743,7 @@ if (upgradeType = "Coins") {
     color := PixelGetColor(554, 364, "RGB")
 
     if (!CheckColor(554, 364, 0x000000, 10)) {
+        WriteLog("Opening Shop Menu")
         Click 62, 434
     }
     Sleep 200
@@ -1646,12 +1778,15 @@ NormalUpgrade(type) {
 WaitIfPaused()
 
     if (type = "Size") {
+        WriteLog("Upgrading Size")
         Click 1268, 449
     }
     else if (type = "Walkspeed") {
+        WriteLog("Upgrading Walkspeed")
         Click 1267, 649
     }
     else if (type = "Multiplier") {
+        WriteLog("Upgrading Multiplier")
         Click 1266, 842
     }
     else if (type = "EatSpeed") {
@@ -1661,6 +1796,7 @@ WaitIfPaused()
             Send "{WheelDown}"
         }
         Sleep 250
+        WriteLog("Upgrading EatSpeed")
         Click 1266, 867
     }
 }
@@ -1715,12 +1851,15 @@ RatioUpgrade(ratio) {
     tolerance := 0.2
 
     if (Abs(size - expectedSize) <= tolerance) {
+        WriteLog("Ratio upgrading SIZE")
         Click 1268, 449
     }
     else if (size < expectedSize) {
+        WriteLog("Ratio upgrading SIZE")
         Click 1268, 449
     }
     else {
+        WriteLog("Ratio upgrading MULTIPLIER")
         Click 1266, 842
     }
 }
@@ -1729,6 +1868,7 @@ NormalMaps() {
 WaitIfPaused()
     Loop {
         WaitIfPaused()
+        WriteLog("Closing Shop Menu")
         Click 1455, 224
         Sleep 300
 
@@ -1746,49 +1886,46 @@ WaitIfPaused()
 }
 
 GoFullLogic() {
-SetTimer AutoClicker, 20
+WriteLog("Size bar more than 10%, performing Autoclicking & Checkers")
+StartClicking(20)
 SetTimer CheckRGB, 0
 SetTimer Sell, 0
 
 Loop {
-WaitIfPaused()
-    if (CheckColor(1471, 999, 0x3C8B26, 10))
-        break
-    Sleep 50
-}
-SetTimer AutoClicker, 150
+    color1 := PixelGetColor(1471, 999, "RGB")
+
+    if (CheckColor(1471, 999, 0x3C8B26, 12)) {
+
+    SetTimer StartOCR, 0
+    SetTimer OCRChecker, 0
+    StartClicking(150)
 
 Loop {
-WaitIfPaused()
-    if (CheckColor(1497, 998, 0x3C8F26, 10))
+    WaitIfPaused()
+
+    if (CheckColor(1484, 997, 0x3C8F26, 12)) {
+        WriteLog("Max Size detected")
         break
+    }
+
     Sleep 50
 }
 
-SetTimer AutoClicker, 0
-SetTimer OCRChecker, 0
+    StopClicking()
 
-Loop {
-WaitIfPaused()
-    Click 178, 971
-    Sleep 1000
-
-    if (CheckColor(184, 1000, 0x191C1D, 10))
-        break
-}
-
-if (CheckColor(181, 1001, 0x3C8B26, 10)) {
     Loop {
         WaitIfPaused()
-        Click 175, 966
-        Sleep 300
+        WriteLog("Selling")
+        Click 178, 971
+        Sleep 200
 
-        if (CheckColor(186, 1011, 0x181C1C, 10))
+        if (CheckColor(184, 1000, 0x191C1D, 10)) {
             break
+        }
     }
 }
-
 GoEndLogic()
+}
 }
 
 GoEndLogic() {
@@ -1796,7 +1933,7 @@ GoEndLogic() {
     if (CheckColor(175, 998, 0x3C8D26, 10)) {
         Loop {
             WaitIfPaused()
-
+            WriteLog("Selling")
             Click 175, 971
             Sleep 100
 
@@ -1807,6 +1944,7 @@ GoEndLogic() {
 
     Loop {
         WaitIfPaused()
+        WriteLog("Opening Normal Maps Menu")
         Click 61, 603
         Sleep 500
 
@@ -1823,7 +1961,7 @@ Loop {
         WaitIfPaused()
         if (CheckColor(18, 599, 0xE2E2E2, 10))
             break 2
-
+        WriteLog("Joining Normal Maps")
         Click 697, 692
         Sleep 1000
     }
@@ -1847,8 +1985,10 @@ Loop {
 CheckCrash() {
 WaitIfPaused()
     if (PixelGetColor(710, 425, "RGB") = 0x393B3D) {
+        WriteLog("Disconnect")
         ProcessClose("RobloxPlayerBeta.exe")
         Sleep 2000
+        WriteLog("Not in private, rejoining")
         Rejoin()
     }
 }
@@ -1865,6 +2005,7 @@ WaitIfPaused()
 if WinExist("ahk_exe RobloxPlayerBeta.exe") {
     WinClose("ahk_exe RobloxPlayerBeta.exe")
     if !WinWaitClose("ahk_exe RobloxPlayerBeta.exe", , 3) {
+        WriteLog("Closing Roblox")
         ProcessClose("RobloxPlayerBeta.exe")
         Sleep 200
     }
@@ -1875,7 +2016,7 @@ if WinExist("ahk_exe RobloxPlayerBeta.exe") {
     Loop maxAttempts {
         WaitIfPaused()
         attempt := A_Index
-
+        WriteLog("Running Private link")
         RunBrowser(privateLink)
 
         if WinWait("ahk_exe RobloxPlayerBeta.exe", , 30) {
@@ -1889,7 +2030,7 @@ if WinExist("ahk_exe RobloxPlayerBeta.exe") {
         MsgBox("Invalid or failed Roblox link. Script will now exit.")
         ExitApp()
     }
-
+    WriteLog("Closing Browser")
     CloseBrowser()
     Sleep 1000
 
@@ -2046,7 +2187,9 @@ RestoreDisplay() {
 }
 
 HandleExit(*) {
-    StopClicking()   
+
+    WriteLog("Macro exited")
+    StopClicking()
     RestoreDisplay()
     ExitApp()
 }
@@ -2099,9 +2242,11 @@ HandlePause(*) {
 
     if (isPaused) {
         FileAppend "", pauseFile
+        WriteLog("Pausing")
         ToolTip("⏸ Paused")
     } else {
         FileDelete pauseFile
+        WriteLog("Resuming")
         ToolTip("▶ Resumed")
     }
 
