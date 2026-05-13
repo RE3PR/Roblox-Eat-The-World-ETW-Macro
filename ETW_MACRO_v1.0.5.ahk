@@ -1503,7 +1503,7 @@ Loop {
     if (stableCount >= 2)
         break
 
-    Sleep 320
+    Sleep 170
 }
 prevText := GetOCR(606, 963, 1127, 1036)
 
@@ -1727,7 +1727,7 @@ for line in StrSplit(content, "`n") {
 }
 
 if (upgradeType = "Coins") {
-    WriteLog("Upgrade = Coins, going to Normal Maps")
+    WriteLog("Upgrade = Coins, going to Normal Maps code")
     NormalMaps()
     return
 }
@@ -1885,13 +1885,23 @@ WaitIfPaused()
     }
 }
 
+global mode := ""
+
+
 GoFullLogic() {
+    global mode
+
+    if (mode != "" && mode != "FULL")
+        return
+
+    mode := "FULL"
+    
 WriteLog("Size bar more than 10%, performing Autoclicking & Checkers")
 StartClicking(20)
-SetTimer CheckRGB, 0
-SetTimer Sell, 0
+
 
 Loop {
+    Sleep 100
     color1 := PixelGetColor(1471, 999, "RGB")
 
     if (CheckColor(1471, 999, 0x3C8B26, 12)) {
@@ -1912,19 +1922,9 @@ Loop {
 }
 
     StopClicking()
-
-    Loop {
-        WaitIfPaused()
-        WriteLog("Selling")
-        Click 178, 971
-        Sleep 200
-
-        if (CheckColor(184, 1000, 0x191C1D, 10)) {
-            break
-        }
-    }
+    Sleep 50
+    GoEndLogic()
 }
-GoEndLogic()
 }
 }
 
@@ -2135,7 +2135,6 @@ DisableAllTimers() {
     SetTimer Sell, 0
     SetTimer CheckRGB, 0
     SetTimer OCRChecker, 0
-
 }
 
 GetCurrentResolution() {
