@@ -18,7 +18,14 @@ You may use, modify, and distribute this software, but if you distribute it (eve
 This macro ensures continuous grinding in-game with minimal input.
 
 ---
+## 🆕 Version 1.1.0
 
+✨ Added full support for 1920×1080 resolution  
+- Improved coordinate scaling for widescreen displays  
+- Updated click, RGB, and OCR region handling for 1080p  
+- Better accuracy and stability across multiple resolutions
+-
+---
 ## ⚠️ Requirements
 
 - Tesseract OCR and AutoHotkey v2 installed  
@@ -53,8 +60,8 @@ This macro ensures continuous grinding in-game with minimal input.
 
   ## 📦 Files Included
 
-- `ETW_MACRO_v1.0.3.ahk` – Main AutoHotkey macro script  
-- `ETW_MACRO_v1.0.3.exe` – Compiled executable version
+- `1920x1080` - Folder containing macro for 1920x1080 resolution
+- `1680x1050` - Folder containing macro for 1680x1050 resolution
 - `Files` - Contains Autohotkey files needed to work
 - `Gdip_all.ahk` – Screen capture library for AutoHotkey  
 - `version.txt` – Tracks current macro version
