@@ -24,7 +24,7 @@ This macro ensures continuous grinding in-game with minimal input.
 - Improved coordinate scaling for widescreen displays  
 - Updated click, RGB, and OCR region handling for 1080p  
 - Better accuracy and stability across multiple resolutions
--
+
 ---
 ## ⚠️ Requirements
 
