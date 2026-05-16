@@ -86,6 +86,10 @@ This macro ensures continuous grinding in-game with minimal input.
   
 ---
 
+## 🐛 Report Bugs
+Found a bug? Click [here](https://github.com/RE3PR/Roblox-Eat-The-World-ETW-Macro/issues)
+
+---
 
 ## 🤝 Contributions
 
