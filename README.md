@@ -25,7 +25,7 @@ To get licensed the macro properly, contact:
 
 ---
 
-## 📁 link.txt Location
+## 📁 Private link data Location
 
 The macro stores the private server link inside the Roaming folder.
 
