@@ -13,8 +13,8 @@ if (ScreenWidth = 1680 and ScreenHeight = 1050) {
     clickX := 842
     clickY := 600
 } else if (ScreenWidth = 1920 and ScreenHeight = 1080) {
-    clickX := 955
-    clickY := 636
+    clickX := 930
+    clickY := 595
 } else {
     ; Default fallback or calculate proportionally
     ; Option 1: Throw error or use default
