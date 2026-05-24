@@ -37,14 +37,6 @@ C:\Users\RYZEN7 GAMER\AppData\Roaming\ETWMacro\link.txt
 
 ---
 
-## ▶️ Running the Macro
-
-1. Install AutoHotkey v2
-2. Install Tesseract OCR
-3. Launch the `.exe` script
-
----
-
 ## ⚠️ Notes
 
 - Designed for Roblox: **Eat The World**
