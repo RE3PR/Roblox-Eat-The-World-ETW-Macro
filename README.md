@@ -21,7 +21,7 @@ Download and install:  [Here](https://github.com/UB-Mannheim/tesseract/wiki)
 To get licensed the macro properly, contact:
 
 - Discord: `@brbrpatipim`
-- Server Invite: https://discord.gg/Y88JQxYm
+- Server Invite: [Here](https://discord.gg/zqxQxsYd4S)
 
 ---
 
