@@ -32,7 +32,7 @@ The macro stores the private server link inside the Roaming folder.
 File location:
 
 ```txt
-C:\Users\RYZEN7 GAMER\AppData\Roaming\ETWMacro\link.txt
+C:\Users\USER\AppData\Roaming\ETWMacro\link.txt
 ```
 
 ---
