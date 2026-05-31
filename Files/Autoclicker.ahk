@@ -4,46 +4,64 @@
 CoordMode "Mouse", "Screen"
 SendMode "Event"
 
-; Get screen resolution
-ScreenWidth := A_ScreenWidth
-ScreenHeight := A_ScreenHeight
-
-; Determine click coordinates based on resolution
-if (ScreenWidth = 1680 and ScreenHeight = 1050) {
-    clickX := 842
-    clickY := 600
-} else if (ScreenWidth = 1920 and ScreenHeight = 1080) {
-    clickX := 930
-    clickY := 595
-} else {
-    ; Default fallback or calculate proportionally
-    ; Option 1: Throw error or use default
-    MsgBox "Unsupported resolution: " ScreenWidth "x" ScreenHeight "`nPlease add coordinates for this resolution."
-    ExitApp
-    
-    ; Option 2: Calculate proportionally from 1920x1080 base
-    ; clickX := Round(955 * (ScreenWidth / 1920))
-    ; clickY := Round(636 * (ScreenHeight / 1080))
-}
-
 flagFile  := A_Temp "\clicking.flag"
 pauseFile := A_Temp "\pause.flag"
 speedFile := A_Temp "\speed.txt"
 
+; Get screen resolution
+ScreenWidth := A_ScreenWidth
+ScreenHeight := A_ScreenHeight
+
+; Determine click coordinates
+if (ScreenWidth = 1680 && ScreenHeight = 1050) {
+    clickX := 842
+    clickY := 600
+}
+else if (ScreenWidth = 1920 && ScreenHeight = 1080) {
+    clickX := 930
+    clickY := 595
+}
+else {
+    FileAppend(
+        A_Now " Unsupported resolution: "
+        ScreenWidth "x" ScreenHeight "`n",
+        A_Temp "\autoclicker_debug.txt"
+    )
+    ExitApp
+}
+
 delay := 30
 
-FileAppend("running", flagFile)
+; Create startup flag
+try {
+    if FileExist(flagFile)
+        FileDelete(flagFile)
 
-; ─────────────────────────────────────────
-; MAIN LOOP
-; ─────────────────────────────────────────
+    FileAppend(A_TickCount, flagFile)
+}
+catch Error as e {
+    FileAppend(
+        A_Now " Failed to create flag: "
+        e.Message "`n",
+        A_Temp "\autoclicker_debug.txt"
+    )
+    ExitApp
+}
+
+; Debug startup log
+FileAppend(
+    A_Now " Started successfully`n",
+    A_Temp "\autoclicker_debug.txt"
+)
+
+; Main click loop
 Loop {
 
-    ; stop signal from main script
+    ; Stop signal
     if !FileExist(flagFile)
         break
 
-    ; pause support
+    ; Pause support
     if FileExist(pauseFile) {
         Sleep 50
         continue
@@ -51,10 +69,15 @@ Loop {
 
     Click clickX, clickY
 
-    ; optional dynamic speed
+    ; Dynamic speed
     if FileExist(speedFile) {
         try delay := Integer(Trim(FileRead(speedFile)))
     }
 
     Sleep delay
 }
+
+; Cleanup
+try FileDelete(flagFile)
+
+ExitApp
